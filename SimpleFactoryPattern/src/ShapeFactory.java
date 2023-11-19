@@ -1,3 +1,7 @@
+/**
+ * 工厂：一个单独的类来做实例化的过程
+ * 考虑下不使用工厂模式时，新增一个Shape子类，在Main中如何使用
+ */
 public class ShapeFactory {
     public static Shape getShape(String shapeType){
         if(shapeType==null){
