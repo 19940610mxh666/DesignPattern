@@ -1,3 +1,6 @@
+
+import java.util.ServiceLoader;
+
 /**
  * 意图：定义一系列的算法,把它们一个个封装起来, 并且使它们可相互替换。
  * 主要解决：在有多种算法相似的情况下，使用 if...else 所带来的复杂和难以维护。
@@ -19,6 +22,10 @@
 public class Main {
     //思考两种方式在解耦上的差异
     public static void main(String[] args) {
+        ServiceLoader<Strategy> load = ServiceLoader.load(Strategy.class);
+        for(Strategy strategy:load){
+            System.out.println("name:"+strategy.getClass().getSimpleName());
+        }
         Context add=new Context(new OperationAdd());
         System.out.println("10 + 5 = "+add.executeStrategy(10,5));
         Context sub=new Context(new OperationSubtract());
@@ -26,6 +33,10 @@ public class Main {
         //使用工厂模式
         ContextFactory add2 = new ContextFactory("+");
         System.out.println("11 + 5 = "+add2.executeStrategy(11,5));
-
+        //不使用策略模式，会导致什么问题呢？
+        //这样创建策略，同样符合开闭，低耦合，那么context真的有用吗
+        //其实这一部分的示例代码并没有完全消除if-else，它的优化点是抽象出了接口，把业务逻辑封成了一个个实现类，在复杂场景时，比if-else更好维护
+        OperationAdd addOpera=new OperationAdd();
+        int doAdd = addOpera.doOperation(10, 5);
     }
 }
